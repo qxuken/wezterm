@@ -51,7 +51,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
 else
-	config.window_background_opacity = 0.95
+	config.window_background_opacity = 0.85
 	config.macos_window_background_blur = 20
 end
 
@@ -94,6 +94,10 @@ config.colors.tab_bar = {
 }
 
 config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+if wezterm.target_triple == "aarch64-apple-darwin" then
+	config.leader = { key = "b", mods = "SUPER", timeout_milliseconds = 1000 }
+end
+
 config.keys = {
 	{ key = "F11", action = wezterm.action.ToggleFullScreen },
 	{ key = "(", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
@@ -122,6 +126,39 @@ config.keys = {
 			end),
 		}),
 	},
+	{
+		key = "r",
+		mods = "LEADER",
+		action = act.PromptInputLine({
+			description = wezterm.format({
+				{ Attribute = { Intensity = "Bold" } },
+				{ Foreground = { AnsiColor = "Fuchsia" } },
+				{ Text = "Enter new name for tab" },
+			}),
+			action = wezterm.action_callback(function(window, pane, line)
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
+	-- TODO report issue
+	-- {
+	-- 	key = "r",
+	-- 	mods = "LEADER|SHIFT",
+	-- 	action = act.PromptInputLine({
+	-- 		description = wezterm.format({
+	-- 			{ Attribute = { Intensity = "Bold" } },
+	-- 			{ Foreground = { AnsiColor = "Fuchsia" } },
+	-- 			{ Text = "Enter new name for workspace" },
+	-- 		}),
+	-- 		action = wezterm.action_callback(function(window, pane, line)
+	-- 			if line then
+	-- 				window:mux_window():set_workspace(line)
+	-- 			end
+	-- 		end),
+	-- 	}),
+	-- },
 }
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
