@@ -31,6 +31,9 @@ bar.apply_to_config(config, {
 		cwd = {
 			enabled = false,
 		},
+		clock = {
+			icon = "",
+		},
 	},
 })
 
