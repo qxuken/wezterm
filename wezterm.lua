@@ -56,7 +56,7 @@ else
 end
 
 config.font = wezterm.font("SauceCodePro Nerd Font Mono")
-config.font_size = 19.0
+config.font_size = 18.0
 config.command_palette_font_size = 22.0
 config.command_palette_bg_color = cyberdream_colors.background
 config.command_palette_fg_color = cyberdream_colors.foreground
