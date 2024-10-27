@@ -96,9 +96,13 @@ config.colors.tab_bar = {
 config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
 if wezterm.target_triple == "aarch64-apple-darwin" then
 	config.leader = { key = "b", mods = "SUPER", timeout_milliseconds = 1000 }
+	-- config.send_composed_key_when_right_alt_is_pressed = true
+	-- config.use_ime = true
 end
 
 config.keys = {
+	{ key = "LeftArrow", mods = "OPT", action = act.SendString("\x1bb") },
+	{ key = "RightArrow", mods = "OPT", action = act.SendString("\x1bf") },
 	{ key = "F11", action = wezterm.action.ToggleFullScreen },
 	{ key = "(", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
 	{ key = ")", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
