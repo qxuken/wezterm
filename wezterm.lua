@@ -1,7 +1,9 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
-local cyberdream_colors = require("./coloschemes/cyberdream")
+-- local cyberdream_colors = require("./coloschemes/cyberdream")
+local spacedust_colors = require("./coloschemes/spacedust")
+local colors = spacedust_colors
 
 local config = wezterm.config_builder()
 
@@ -20,7 +22,8 @@ bar.apply_to_config(config, {
 			color = 5,
 		},
 		pane = {
-			enabled = false,
+			enabled = wezterm.target_triple == "x86_64-pc-windows-msvc",
+			icon = "",
 		},
 		username = {
 			enabled = false,
@@ -50,46 +53,46 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.window_background_opacity = 0.0
 	config.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
-else
-	config.window_background_opacity = 0.85
+elseif wezterm.target_triple == "aarch64-apple-darwin" then
+	config.window_background_opacity = 0.97
 	config.macos_window_background_blur = 20
 end
 
 config.font = wezterm.font("SauceCodePro Nerd Font Mono")
 config.font_size = 18.0
 config.command_palette_font_size = 22.0
-config.command_palette_bg_color = cyberdream_colors.background
-config.command_palette_fg_color = cyberdream_colors.foreground
+config.command_palette_bg_color = colors.background
+config.command_palette_fg_color = colors.foreground
 
 config.color_schemes = {
-	Cyberdream = cyberdream_colors,
+	CQS = colors,
 }
-config.color_scheme = "Cyberdream"
-config.colors = cyberdream_colors
+config.colors = colors
+config.color_scheme = "CQS"
 
 config.colors.tab_bar = {
 	background = "transparent",
 	active_tab = {
 		bg_color = "transparent",
-		fg_color = cyberdream_colors.brights[6],
+		fg_color = colors.brights[6],
 		intensity = "Bold",
 	},
 	inactive_tab = {
 		bg_color = "transparent",
-		fg_color = cyberdream_colors.selection_bg,
+		fg_color = colors.selection_bg,
 	},
 	inactive_tab_hover = {
 		bg_color = "transparent",
-		fg_color = cyberdream_colors.selection_bg,
+		fg_color = colors.selection_bg,
 		italic = true,
 	},
 	new_tab = {
 		bg_color = "transparent",
-		fg_color = cyberdream_colors.selection_bg,
+		fg_color = colors.selection_bg,
 	},
 	new_tab_hover = {
-		bg_color = cyberdream_colors.cursor_bg,
-		fg_color = cyberdream_colors.cursor_fg,
+		bg_color = colors.cursor_bg,
+		fg_color = colors.cursor_fg,
 	},
 }
 
@@ -168,12 +171,11 @@ config.keys = {
 }
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	config.default_prog = { "pwsh", "-l", "-NoLogo" }
-end
-
-if wezterm.target_triple == "aarch64-apple-darwin" then
-	config.set_environment_variables = { XDG_CONFIG_HOME = "/Users/qxuken/.config/" }
-	config.default_prog = { "/opt/homebrew/bin/nu", "-l" }
+	-- config.default_prog = { "pwsh", "-l", "-NoLogo" }
+	config.default_prog = { "nu", "-l" }
+elseif wezterm.target_triple == "aarch64-apple-darwin" then
+	-- config.set_environment_variables = { XDG_CONFIG_HOME = "/Users/qxuken/.config/" }
+	-- config.default_prog = { "/opt/homebrew/bin/nu", "-l" }
 end
 
 return config
