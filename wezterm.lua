@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 -- local cyberdream_colors = require("./coloschemes/cyberdream")
-local spacedust_colors = require("./coloschemes/spacedust")
-local colors = spacedust_colors
+-- local spacedust_colors = require("./coloschemes/spacedust")
+local colors = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 
 local config = wezterm.config_builder()
 
