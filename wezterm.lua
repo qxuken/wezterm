@@ -1,9 +1,9 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
--- local cyberdream_colors = require("./coloschemes/cyberdream")
+local cyberdream_colors = require("./coloschemes/cyberdream")
 -- local spacedust_colors = require("./coloschemes/spacedust")
-local colors = wezterm.color.get_builtin_schemes()["dawnfox"]
+local colors = wezterm.color.get_builtin_schemes()["nightfox"]
 
 local config = wezterm.config_builder()
 
@@ -48,21 +48,21 @@ config.window_padding = {
 }
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	-- config.window_background_opacity = 0.90
+	config.window_background_opacity = 0.75
 	-- config.win32_system_backdrop = "Acrylic"
-	-- config.window_background_opacity = 0.85
-	-- config.win32_system_backdrop = "Mica"
+	-- config.window_background_opacity = 0.0
+	config.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
-	config.window_background_opacity = 0.97
+	config.window_background_opacity = 0.85
 	config.macos_window_background_blur = 20
 end
 
 config.font = wezterm.font("SauceCodePro Nerd Font Mono")
 config.font_size = 18.0
 config.command_palette_font_size = 22.0
-config.command_palette_bg_color = colors.background
-config.command_palette_fg_color = colors.foreground
+config.command_palette_bg_color = cyberdream_colors.background
+config.command_palette_fg_color = cyberdream_colors.foreground
 
 config.color_schemes = {
 	CQS = colors,
