@@ -3,7 +3,7 @@ local act = wezterm.action
 
 -- local cyberdream_colors = require("./coloschemes/cyberdream")
 -- local spacedust_colors = require("./coloschemes/spacedust")
-local colors = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
+local colors = wezterm.color.get_builtin_schemes()["dawnfox"]
 
 local config = wezterm.config_builder()
 
@@ -48,10 +48,10 @@ config.window_padding = {
 }
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	-- config.window_background_opacity = 0.85
+	-- config.window_background_opacity = 0.90
 	-- config.win32_system_backdrop = "Acrylic"
-	config.window_background_opacity = 0.0
-	config.win32_system_backdrop = "Mica"
+	-- config.window_background_opacity = 0.85
+	-- config.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
 	config.window_background_opacity = 0.97
