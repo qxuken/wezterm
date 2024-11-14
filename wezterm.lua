@@ -54,7 +54,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
-	config.window_background_opacity = 0.85
+	config.window_background_opacity = 0.95
 	config.macos_window_background_blur = 20
 end
 
