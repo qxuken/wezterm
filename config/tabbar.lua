@@ -10,8 +10,8 @@ local config = {
 		copy_mode = "C",
 		search_mode = "S",
 	},
-	inactive_bg = "#303030", -- colours.inactive_tab.bg_color
-	inactive_fg = "#c6c6c6", -- colours.inactive_tab.fg_color
+	inactive_bg = "#303030", -- colors.inactive_tab.bg_color
+	inactive_fg = "#c6c6c6", -- colors.inactive_tab.fg_color
 }
 
 local function basename(s)
@@ -23,13 +23,40 @@ M.apply_to_config = function(c)
 	c.use_fancy_tab_bar = false
 	c.tab_bar_at_bottom = config.position == "bottom"
 	c.tab_max_width = config.max_width + 3
+
+	local colors = c.colors
+	colors.tab_bar = {
+		background = "transparent",
+		active_tab = {
+			bg_color = "transparent",
+			fg_color = colors.brights[6],
+			intensity = "Bold",
+		},
+		inactive_tab = {
+			bg_color = config.inactive_bg,
+			fg_color = config.inactive_fg,
+		},
+		inactive_tab_hover = {
+			bg_color = "transparent",
+			fg_color = colors.selection_bg,
+			italic = true,
+		},
+		new_tab = {
+			bg_color = "transparent",
+			fg_color = colors.selection_bg,
+		},
+		new_tab_hover = {
+			bg_color = colors.cursor_bg,
+			fg_color = colors.cursor_fg,
+		},
+	}
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
 	local index_i = tab.tab_index + 1
 
 	local palette = conf.resolved_palette
-	local colours = palette.tab_bar
+	local colors = palette.tab_bar
 
 	local rainbow = {
 		palette.ansi[2],
@@ -41,7 +68,9 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 	}
 
 	local active_bg = rainbow[tab.tab_index % 6 + 1]
-	local active_fg = colours.background
+	local active_fg = colors.background
+	local inactive_bg = colors.inactive_tab.bg_color
+	local inactive_fg = colors.inactive_tab.fg_color
 
 	local s_bg, s_fg, e_bg, e_fg
 
@@ -51,10 +80,10 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 		e_bg = active_fg
 		e_fg = active_bg
 	else
-		s_bg = config.inactive_bg
-		s_fg = config.inactive_fg
+		s_bg = inactive_bg
+		s_fg = inactive_fg
 		e_bg = active_fg
-		e_fg = config.inactive_bg
+		e_fg = inactive_bg
 	end
 
 	local pane = tab.active_pane
@@ -78,7 +107,10 @@ wezterm.on("update-status", function(window, pane)
 	end
 
 	local palette = conf.resolved_palette
-	local colours = palette.tab_bar
+	local colors = palette.tab_bar
+
+	local inactive_bg = colors.inactive_tab.bg_color
+	local inactive_fg = colors.inactive_tab.fg_color
 
 	local leader_text = ""
 	local leader_bg = palette.ansi[6]
@@ -99,7 +131,7 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = "" },
 	})
 	local leader = wezterm.format({
-		{ Foreground = { Color = colours.background } },
+		{ Foreground = { Color = colors.background } },
 		{ Background = { Color = leader_bg } },
 		{ Attribute = { Intensity = "Bold" } },
 		{ Text = " " .. leader_text .. " " },
@@ -111,12 +143,12 @@ wezterm.on("update-status", function(window, pane)
 
 	local domain_left = wezterm.format({
 		{ Background = { Color = "transparent" } },
-		{ Foreground = { Color = config.inactive_bg } },
+		{ Foreground = { Color = inactive_bg } },
 		{ Text = "" },
 	})
 	local domain = wezterm.format({
-		{ Background = { Color = config.inactive_bg } },
-		{ Foreground = { Color = config.inactive_fg } },
+		{ Background = { Color = inactive_bg } },
+		{ Foreground = { Color = inactive_fg } },
 		{ Text = " " .. pane:get_domain_name() .. " " },
 	})
 	local time_fmt = wezterm.format({
