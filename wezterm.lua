@@ -7,45 +7,16 @@ local colors = wezterm.color.get_builtin_schemes()["nightfox"]
 
 local config = wezterm.config_builder()
 
-local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
-bar.apply_to_config(config, {
-	padding = {
-		top = 0,
-	},
-	separator = {
-		space = 1,
-		left_icon = "",
-		right_icon = "",
-	},
-	modules = {
-		workspace = {
-			color = 5,
-		},
-		pane = {
-			enabled = wezterm.target_triple == "x86_64-pc-windows-msvc",
-			icon = "",
-		},
-		username = {
-			enabled = false,
-		},
-		hostname = {
-			enabled = false,
-		},
-		cwd = {
-			enabled = false,
-		},
-		clock = {
-			icon = "",
-		},
-	},
-})
+local bar = require("./bar")
+bar.apply_to_config(config)
 
 config.window_padding = {
-	left = 1,
+	left = 0,
 	right = 0,
 	top = 0,
 	bottom = 0,
 }
+config.enable_scroll_bar = false
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.window_background_opacity = 0.75
