@@ -178,4 +178,12 @@ elseif wezterm.target_triple == "aarch64-apple-darwin" then
 	-- config.default_prog = { "/opt/homebrew/bin/nu", "-l" }
 end
 
+config.front_end = "WebGpu"
+config.max_fps = 144
+config.animation_fps = 144
+
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+	config.webgpu_power_preference = "HighPerformance"
+end
+
 return config
