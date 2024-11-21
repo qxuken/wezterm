@@ -87,8 +87,15 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 	end
 
 	local pane = tab.active_pane
+	local title = pane.title
 	local proc = basename(pane.foreground_process_name)
-	local tab_title = proc ~= "nu" and proc or pane.title
+	local tab_title = ""
+	local title_start = string.sub(title, 1, 5)
+	if title_start == "Launc" or title_start == "Debug" then
+		tab_title = title
+	else
+		tab_title = proc ~= "nu" and proc or pane.title
+	end
 
 	return {
 		{ Background = { Color = s_bg } },
