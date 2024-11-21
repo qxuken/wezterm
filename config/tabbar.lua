@@ -69,11 +69,16 @@ local function basename(possible_exe)
 end
 
 local function nu_osc_fmt(title)
+	local remote = ""
 	local current_folder = ""
 	local exe = ""
 	local last_slash = 1
 	for i = 1, title:len() do
 		local ch = string.sub(title, i, i)
+		if ch == ":" then
+			remote = title:sub(1, i) .. " "
+			goto continue
+		end
 		if ch == "/" or ch == "\\" then
 			last_slash = i
 			goto continue
@@ -94,7 +99,7 @@ local function nu_osc_fmt(title)
 
 	-- if no executables in string print last path segment
 	if exe == "" then
-		return wezterm.nerdfonts.cod_folder .. " " .. title:sub(last_slash + 1)
+		return wezterm.nerdfonts.cod_folder .. " " .. remote .. title:sub(last_slash + 1)
 	end
 
 	exe = basename(exe)
@@ -104,7 +109,7 @@ local function nu_osc_fmt(title)
 
 	local icon = config.known_programs[exe] or wezterm.nerdfonts.cod_debug_start
 
-	return icon .. " " .. current_folder .. " " .. exe
+	return icon .. " " .. remote .. current_folder .. " " .. exe
 end
 
 -- conforming to https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd
