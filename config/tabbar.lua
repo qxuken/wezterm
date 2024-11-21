@@ -12,10 +12,99 @@ local config = {
 	},
 	inactive_bg = "#303030", -- colors.inactive_tab.bg_color
 	inactive_fg = "#c6c6c6", -- colors.inactive_tab.fg_color
+	strip_extensions = {
+		[".sh"] = true,
+		[".exe"] = true,
+	},
+	known_aliases = {
+		n = "nvim",
+		hx = "helix",
+		lz = "lazygit",
+	},
+	known_programs = {
+		Launcher = wezterm.nerdfonts.cod_rocket,
+		Debug = wezterm.nerdfonts.cod_debug,
+		launcher = wezterm.nerdfonts.md_rocket_launch,
+		starship = wezterm.nerdfonts.md_rocket_launch_outline,
+		debug = wezterm.nerdfonts.cod_debug,
+		nu = wezterm.nerdfonts.seti_shell,
+		wezterm = wezterm.nerdfonts.seti_shell,
+		lazygit = wezterm.nerdfonts.dev_git_branch,
+		gh = wezterm.nerdfonts.cod_github_inverted,
+		nvim = wezterm.nerdfonts.custom_neovim,
+		vim = wezterm.nerdfonts.custom_vim,
+		node = wezterm.nerdfonts.dev_javascript,
+		npm = wezterm.nerdfonts.dev_javascript,
+		yarn = wezterm.nerdfonts.dev_javascript,
+		pnpm = wezterm.nerdfonts.dev_javascript,
+		bun = wezterm.nerdfonts.seti_typescript,
+		deno = wezterm.nerdfonts.seti_typescript,
+		go = wezterm.nerdfonts.seti_go,
+		air = wezterm.nerdfonts.seti_go,
+		rustc = wezterm.nerdfonts.dev_rust,
+		cargo = wezterm.nerdfonts.dev_rust,
+		python = wezterm.nerdfonts.dev_python,
+		python3 = wezterm.nerdfonts.dev_python,
+		pip = wezterm.nerdfonts.dev_python,
+		pip3 = wezterm.nerdfonts.dev_python,
+		ansible = wezterm.nerdfonts.md_ansible,
+		sqlite3 = wezterm.nerdfonts.dev_sqllite,
+	},
 }
 
-local function basename(s)
-	return string.gsub(s, "(.*[/\\])(.*)", "%2")
+local function basename(possible_exe)
+	local right = possible_exe:len()
+	local left = 1
+	for i = possible_exe:len(), 1, -1 do
+		local ch = string.sub(possible_exe, i, i)
+		if ch == "." then
+			right = i
+			break
+		end
+	end
+	if right < 2 or config.strip_extensions[string.sub(possible_exe, right)] == nil then
+		return possible_exe
+	end
+	return possible_exe:sub(left, right - 1)
+end
+
+local function nu_osc_fmt(title)
+	local current_folder = ""
+	local exe = ""
+	local last_slash = 1
+	for i = 1, title:len() do
+		local ch = string.sub(title, i, i)
+		if ch == "/" or ch == "\\" then
+			last_slash = i
+			goto continue
+		end
+		if ch == ">" then
+			current_folder = title:sub(last_slash + 1, i - 1)
+			exe = title:sub(i + 2)
+			break
+		end
+		::continue::
+	end
+	-- if there is no path elements print as is
+	if last_slash == 1 then
+		title = basename(title)
+		local icon = config.known_programs[title] or wezterm.nerdfonts.md_egg
+		return icon .. " " .. title
+	end
+
+	-- if no executables in string print last path segment
+	if exe == "" then
+		return wezterm.nerdfonts.cod_folder .. " " .. title:sub(last_slash + 1)
+	end
+
+	exe = basename(exe)
+	if config.known_aliases[exe] ~= nil then
+		exe = config.known_aliases[exe]
+	end
+
+	local icon = config.known_programs[exe] or wezterm.nerdfonts.cod_debug_start
+
+	return icon .. " " .. current_folder .. " " .. exe
 end
 
 -- conforming to https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd
@@ -87,20 +176,15 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 	end
 
 	local pane = tab.active_pane
-	local title = pane.title
-	local proc = basename(pane.foreground_process_name)
-	local tab_title = ""
-	local title_start = string.sub(title, 1, 5)
-	if title_start == "Launc" or title_start == "Debug" then
-		tab_title = title
-	else
-		tab_title = proc ~= "nu" and proc or pane.title
-	end
+
+	local tab_title = tab.tab_title and tab.tab_title ~= "" and wezterm.nerdfonts.fa_bookmark .. " " .. tab.tab_title
+		or nu_osc_fmt(pane.title)
+	local domain_icon = pane.domain_name:sub(1, 3) == "WSL" and wezterm.nerdfonts.linux_locos .. "  " or ""
 
 	return {
 		{ Background = { Color = s_bg } },
 		{ Foreground = { Color = s_fg } },
-		{ Text = " " .. tab_title .. " " },
+		{ Text = " " .. domain_icon .. tab_title .. " " },
 		{ Background = { Color = e_bg } },
 		{ Foreground = { Color = e_fg } },
 		{ Text = index_i == #tabs and "" or "" },
@@ -153,6 +237,13 @@ wezterm.on("update-status", function(window, pane)
 		{ Foreground = { Color = inactive_bg } },
 		{ Text = "" },
 	})
+
+	local workspace = wezterm.format({
+		{ Background = { Color = inactive_bg } },
+		{ Foreground = { Color = inactive_fg } },
+		{ Text = " " .. window:active_workspace() .. " " },
+	})
+
 	local domain = wezterm.format({
 		{ Background = { Color = inactive_bg } },
 		{ Foreground = { Color = inactive_fg } },
@@ -161,7 +252,7 @@ wezterm.on("update-status", function(window, pane)
 	local time_fmt = wezterm.format({
 		{ Background = { Color = palette.ansi[6] } },
 		{ Foreground = { Color = palette.background } },
-		{ Text = time },
+		{ Text = " " .. time },
 	})
 	local time_right = wezterm.format({
 		{ Background = { Color = "transparent" } },
@@ -169,7 +260,7 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = "" },
 	})
 
-	window:set_right_status(domain_left .. domain .. time_fmt .. time_right .. " ")
+	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right)
 end)
 
 return M
