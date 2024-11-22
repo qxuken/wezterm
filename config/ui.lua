@@ -12,9 +12,9 @@ local M = {}
 M.apply_to_config = function(c)
 	c.window_padding = {
 		left = 0,
-		right = 0,
+		right = "1cell",
 		top = 0,
-		bottom = 0,
+		bottom = "0.25cell",
 	}
 	c.enable_scroll_bar = false
 
@@ -25,8 +25,8 @@ M.apply_to_config = function(c)
 		c.win32_system_backdrop = "Mica"
 	-- config.win32_system_backdrop = "Tabbed"
 	elseif wezterm.target_triple == "aarch64-apple-darwin" then
-		c.window_background_opacity = 0.95
-		c.macos_window_background_blur = 20
+		c.window_background_opacity = 0.9
+		c.macos_window_background_blur = 80
 	end
 
 	c.colors = wezterm.color.get_builtin_schemes()[config.theme]

@@ -49,6 +49,7 @@ local config = {
 		pip3 = wezterm.nerdfonts.dev_python,
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
+		storybook = wezterm.nerdfonts.md_monitor_screenshot,
 	},
 }
 
@@ -103,13 +104,39 @@ local function nu_osc_fmt(title)
 	end
 
 	exe = basename(exe)
-	if config.known_aliases[exe] ~= nil then
-		exe = config.known_aliases[exe]
-	end
+	exe = config.known_aliases[exe] or exe
 
 	local icon = config.known_programs[exe] or wezterm.nerdfonts.cod_debug_start
 
 	return icon .. " " .. remote .. current_folder .. " " .. exe
+end
+
+local function fmt_tab_title(title)
+	if title == nil or title == "" then
+		return nil
+	end
+
+	local exe = ""
+
+	if title:sub(1, 1) == "!" then
+		local space = 1
+		for i = 2, title:len() do
+			if string.sub(title, i, i) == " " then
+				space = i
+				break
+			end
+		end
+		if space == 1 or space == title:len() then
+			title = title:sub(2)
+			exe = title
+		else
+			exe = title:sub(2, space - 1)
+			title = title:sub(space + 1)
+		end
+	end
+	exe = config.known_aliases[exe] or exe
+	local icon = config.known_programs[exe] ~= nil and config.known_programs[exe] .. " " or ""
+	return wezterm.nerdfonts.fa_bookmark .. " " .. icon .. title
 end
 
 -- conforming to https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd
@@ -182,8 +209,7 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 
 	local pane = tab.active_pane
 
-	local tab_title = tab.tab_title and tab.tab_title ~= "" and wezterm.nerdfonts.fa_bookmark .. " " .. tab.tab_title
-		or nu_osc_fmt(pane.title)
+	local tab_title = fmt_tab_title(tab.tab_title) or nu_osc_fmt(pane.title)
 	local domain_icon = pane.domain_name:sub(1, 3) == "WSL" and wezterm.nerdfonts.linux_locos .. "  " or ""
 
 	return {
@@ -265,7 +291,7 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = "" },
 	})
 
-	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right)
+	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right .. " ")
 end)
 
 return M
