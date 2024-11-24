@@ -20,6 +20,7 @@ local config = {
 		n = "nvim",
 		hx = "helix",
 		lz = "lazygit",
+		y = "yazi",
 	},
 	known_programs = {
 		Launcher = wezterm.nerdfonts.cod_rocket,
@@ -50,6 +51,7 @@ local config = {
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
 		storybook = wezterm.nerdfonts.md_monitor_screenshot,
+		yazi = wezterm.nerdfonts.md_duck,
 	},
 }
 
