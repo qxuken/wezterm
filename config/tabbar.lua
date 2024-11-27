@@ -22,6 +22,10 @@ local config = {
 		lz = "lazygit",
 		y = "yazi",
 	},
+	hide_names = {
+		nvim = true,
+		lazygit = true,
+	},
 	known_programs = {
 		Launcher = wezterm.nerdfonts.cod_rocket,
 		Debug = wezterm.nerdfonts.cod_debug,
@@ -30,15 +34,15 @@ local config = {
 		debug = wezterm.nerdfonts.cod_debug,
 		nu = wezterm.nerdfonts.seti_shell,
 		wezterm = wezterm.nerdfonts.seti_shell,
-		lazygit = wezterm.nerdfonts.dev_git_branch,
+		lazygit = utf8.char(0xf1d3),
 		gh = wezterm.nerdfonts.cod_github_inverted,
-		nvim = wezterm.nerdfonts.custom_neovim,
+		nvim = utf8.char(0xf36f),
 		vim = wezterm.nerdfonts.custom_vim,
 		node = wezterm.nerdfonts.dev_javascript,
-		npm = wezterm.nerdfonts.dev_javascript,
-		yarn = wezterm.nerdfonts.dev_javascript,
-		pnpm = wezterm.nerdfonts.dev_javascript,
-		bun = wezterm.nerdfonts.seti_typescript,
+		npm = utf8.char(0xfbf5),
+		yarn = utf8.char(0xe6a7),
+		pnpm = utf8.char(0xe865),
+		bun = utf8.char(0xe76f),
 		deno = wezterm.nerdfonts.seti_typescript,
 		go = wezterm.nerdfonts.seti_go,
 		air = wezterm.nerdfonts.seti_go,
@@ -50,8 +54,8 @@ local config = {
 		pip3 = wezterm.nerdfonts.dev_python,
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
-		storybook = wezterm.nerdfonts.md_monitor_screenshot,
-		yazi = wezterm.nerdfonts.md_duck,
+		storybook = utf8.char(0xe8b3),
+		yazi = utf8.char(0xf6e4),
 	},
 }
 
@@ -107,10 +111,14 @@ local function nu_osc_fmt(title)
 
 	exe = basename(exe)
 	exe = config.known_aliases[exe] or exe
-
 	local icon = config.known_programs[exe] or wezterm.nerdfonts.cod_debug_start
+	if config.hide_names[exe] then
+		exe = ""
+	else
+		exe = " " .. exe
+	end
 
-	return icon .. " " .. remote .. current_folder .. " " .. exe
+	return icon .. " " .. remote .. current_folder .. exe
 end
 
 local function fmt_tab_title(title)
@@ -212,12 +220,12 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 	local pane = tab.active_pane
 
 	local tab_title = fmt_tab_title(tab.tab_title) or nu_osc_fmt(pane.title)
-	local domain_icon = pane.domain_name:sub(1, 3) == "WSL" and wezterm.nerdfonts.linux_locos .. "  " or ""
+	local domain_icon = pane.domain_name:sub(1, 3) == "WSL" and wezterm.nerdfonts.linux_locos .. " " or ""
 
 	return {
 		{ Background = { Color = s_bg } },
 		{ Foreground = { Color = s_fg } },
-		{ Text = " " .. domain_icon .. tab_title .. " " },
+		{ Text = " " .. domain_icon .. tab_title .. " " },
 		{ Background = { Color = e_bg } },
 		{ Foreground = { Color = e_fg } },
 		{ Text = index_i == #tabs and "" or "" },
