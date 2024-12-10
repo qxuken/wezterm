@@ -154,6 +154,7 @@ M.apply_to_config = function(c)
 	c.use_fancy_tab_bar = false
 	c.tab_bar_at_bottom = config.position == "bottom"
 	c.tab_max_width = config.max_width + 3
+	c.show_new_tab_button_in_tab_bar = false
 
 	local colors = c.colors
 	colors.tab_bar = {
@@ -183,6 +184,7 @@ M.apply_to_config = function(c)
 	}
 end
 
+---@diagnostic disable-next-line: unused-local
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
 	local index_i = tab.tab_index + 1
 
