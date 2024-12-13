@@ -303,7 +303,7 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = "" },
 	})
 
-	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right .. " ")
+	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right)
 end)
 
 return M

@@ -12,9 +12,9 @@ local M = {}
 M.apply_to_config = function(c)
 	c.window_padding = {
 		left = 0,
-		right = "1cell",
+		right = 0,
 		top = 0,
-		bottom = "0.25cell",
+		bottom = 0,
 	}
 	c.enable_scroll_bar = false
 
