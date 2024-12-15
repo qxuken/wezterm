@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 
 local config = {
-	theme = "nightfox",
+	theme = "Rosé Pine (Gogh)",
 	font_size = 18.0,
 	font_family = "SauceCodePro Nerd Font Mono",
 }
@@ -19,16 +19,18 @@ M.apply_to_config = function(c)
 	c.enable_scroll_bar = false
 
 	if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-		c.window_background_opacity = 0.75
-		-- config.win32_system_backdrop = "Acrylic"
-		-- config.window_background_opacity = 0.0
+		-- c.window_background_opacity = 0.75
+		-- c.win32_system_backdrop = "Acrylic"
+		-- c.window_background_opacity = 0.0
+		-- c.window_background_opacity = 0.85
 		c.win32_system_backdrop = "Mica"
-	-- config.win32_system_backdrop = "Tabbed"
+		-- c.win32_system_backdrop = "Tabbed"
 	elseif wezterm.target_triple == "aarch64-apple-darwin" then
 		c.window_background_opacity = 0.95
 		c.macos_window_background_blur = 100
 	end
 
+	c.color_scheme = config.theme
 	c.colors = wezterm.color.get_builtin_schemes()[config.theme]
 
 	c.font = wezterm.font(config.font_family)

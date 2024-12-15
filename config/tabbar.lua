@@ -170,17 +170,17 @@ M.apply_to_config = function(c)
 		},
 		inactive_tab_hover = {
 			bg_color = "transparent",
-			fg_color = colors.selection_bg,
+			fg_color = config.inactive_fg,
 			italic = true,
 		},
-		new_tab = {
-			bg_color = "transparent",
-			fg_color = colors.selection_bg,
-		},
-		new_tab_hover = {
-			bg_color = colors.cursor_bg,
-			fg_color = colors.cursor_fg,
-		},
+		-- new_tab = {
+		-- 	bg_color = "transparent",
+		-- 	fg_color = config.inactive_fg,
+		-- },
+		-- new_tab_hover = {
+		-- 	bg_color = colors.cursor_bg,
+		-- 	fg_color = colors.cursor_fg,
+		-- },
 	}
 end
 
