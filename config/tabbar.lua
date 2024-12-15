@@ -271,7 +271,7 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = " " .. leader_text .. " " },
 	})
 
-	window:set_left_status(" " .. leader_left .. leader)
+	window:set_left_status(leader_left .. leader)
 
 	local time = wezterm.time.now():format(" %H:%M ")
 
