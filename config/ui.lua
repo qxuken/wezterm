@@ -44,14 +44,7 @@ M.apply_to_config = function(c)
 	c.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 	c.enable_scroll_bar = false
 
-	if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-		-- c.window_background_opacity = 0.75
-		-- c.win32_system_backdrop = "Acrylic"
-		-- c.window_background_opacity = 0.0
-		-- c.window_background_opacity = 0.85
-		c.win32_system_backdrop = "Mica"
-		-- c.win32_system_backdrop = "Tabbed"
-	elseif wezterm.target_triple == "aarch64-apple-darwin" then
+	if wezterm.target_triple == "aarch64-apple-darwin" then
 		c.window_background_opacity = 0.95
 		c.macos_window_background_blur = 100
 	end
@@ -59,12 +52,7 @@ M.apply_to_config = function(c)
 	c.color_scheme = config.theme
 	c.colors = wezterm.color.get_builtin_schemes()[config.theme]
 
-	c.font = wezterm.font_with_fallback({
-		config.font_family,
-		"FiraCode",
-		"SauceCodePro Nerd Font Mono",
-		"SourceCodePro",
-	})
+	c.font = wezterm.font_with_fallback(config.font_families)
 	c.font_size = config.font_size
 	c.command_palette_font_size = 22.0
 	c.command_palette_bg_color = c.colors.background
