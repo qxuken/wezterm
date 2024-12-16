@@ -5,6 +5,8 @@ local fira_features = {
 	"cv01",
 	"cv02",
 	"cv06",
+	"ss05",
+	"ss03",
 	"cv16",
 	"cv31",
 	"cv29",
