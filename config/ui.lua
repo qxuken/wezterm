@@ -24,7 +24,7 @@ local fira_features = {
 
 local config = {
 	theme = "Rosé Pine (Gogh)",
-	font_size = 18.0,
+	font_size = 19.0,
 	font_families = {
 		{
 			family = "FiraCode Nerd Font",
