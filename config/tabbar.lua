@@ -55,7 +55,7 @@ local config = {
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
 		storybook = utf8.char(0xe8b3),
-		yazi = utf8.char(0xf6e4),
+		yazi = utf8.char(0xf0b78),
 	},
 }
 
