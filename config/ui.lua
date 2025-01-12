@@ -25,13 +25,10 @@ local fira_features = {
 local config = {
 	theme = "Rosé Pine (Gogh)",
 	font_size = 19.0,
-	font_families = {
-		{
-			family = "Fira Code",
-			weight = "Medium",
-			harfbuzz_features = fira_features,
-		},
-		"Symbols Nerd Font Mono",
+	font_family = {
+		family = "FiraMono Nerd Font",
+		weight = "Medium",
+		harfbuzz_features = fira_features,
 	},
 }
 
@@ -45,9 +42,8 @@ M.apply_to_config = function(c)
 	c.color_scheme = config.theme
 	c.colors = wezterm.color.get_builtin_schemes()[config.theme]
 
-	c.font = wezterm.font_with_fallback(config.font_families)
+	c.font = wezterm.font(config.font_family)
 	c.font_dirs = { "fonts" }
-	c.font_locator = "ConfigDirsOnly"
 
 	c.font_size = config.font_size
 	c.command_palette_font_size = 22.0
