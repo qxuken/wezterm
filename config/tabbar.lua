@@ -57,7 +57,7 @@ local config = {
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
 		storybook = utf8.char(0xe8b3),
-		yazi = utf8.char(0xf0b78),
+		yazi = wezterm.nerdfonts.md_folder_table,
 	},
 }
 
@@ -108,7 +108,7 @@ local function nu_osc_fmt(title)
 
 	-- if no executables in string print last path segment
 	if exe == "" then
-		return wezterm.nerdfonts.cod_folder .. " " .. remote .. title:sub(last_slash + 1)
+		return wezterm.nerdfonts.md_folder .. " " .. remote .. title:sub(last_slash + 1)
 	end
 
 	exe = basename(exe)
