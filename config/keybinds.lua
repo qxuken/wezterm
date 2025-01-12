@@ -60,7 +60,7 @@ M.apply_to_config = function(c)
 				end),
 			}),
 		},
-		-- TODO report issue
+		-- TODO: report issue
 		-- {
 		-- 	key = "r",
 		-- 	mods = "LEADER|SHIFT",

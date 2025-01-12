@@ -255,7 +255,7 @@ wezterm.on("update-status", function(window, pane)
 		leader_text = config.modes[active]
 		leader_bg = palette.ansi[7]
 	elseif window:leader_is_active() then
-		leader_text = wezterm.nerdfonts.cod_circle_large_filled
+		leader_text = wezterm.nerdfonts.cod_circle_filled
 		leader_bg = palette.ansi[4]
 	else
 		leader_text = wezterm.nerdfonts.cod_circle
