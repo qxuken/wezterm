@@ -25,6 +25,7 @@ local config = {
 	hide_names = {
 		nvim = true,
 		lazygit = true,
+		yazi = true,
 	},
 	known_programs = {
 		Launcher = wezterm.nerdfonts.cod_rocket,
@@ -34,6 +35,7 @@ local config = {
 		debug = wezterm.nerdfonts.cod_debug,
 		nu = wezterm.nerdfonts.seti_shell,
 		wezterm = wezterm.nerdfonts.seti_shell,
+		brew = utf8.char(0xe7fd),
 		lazygit = utf8.char(0xf1d3),
 		gh = wezterm.nerdfonts.cod_github_inverted,
 		nvim = utf8.char(0xf36f),
