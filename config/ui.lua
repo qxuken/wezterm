@@ -27,15 +27,11 @@ local config = {
 	font_size = 19.0,
 	font_families = {
 		{
-			family = "FiraCode Nerd Font",
+			family = "Fira Code",
+			weight = "Medium",
 			harfbuzz_features = fira_features,
 		},
-		{
-			family = "FiraCode",
-			harfbuzz_features = fira_features,
-		},
-		"SauceCodePro Nerd Font Mono",
-		"SourceCodePro",
+		"Symbols Nerd Font Mono",
 	},
 }
 
@@ -50,6 +46,9 @@ M.apply_to_config = function(c)
 	c.colors = wezterm.color.get_builtin_schemes()[config.theme]
 
 	c.font = wezterm.font_with_fallback(config.font_families)
+	c.font_dirs = { "fonts" }
+	c.font_locator = "ConfigDirsOnly"
+
 	c.font_size = config.font_size
 	c.command_palette_font_size = 22.0
 	c.command_palette_bg_color = c.colors.background
