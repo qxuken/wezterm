@@ -5,7 +5,7 @@ local M = {}
 
 -- conforming to https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd
 M.apply_to_config = function(c)
-	c.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+	c.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 5000 }
 	-- if wezterm.target_triple == "aarch64-apple-darwin" then
 	-- c.leader = { key = "b", mods = "SUPER", timeout_milliseconds = 1000 }
 	-- config.send_composed_key_when_right_alt_is_pressed = true
