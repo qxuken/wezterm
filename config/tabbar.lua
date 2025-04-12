@@ -10,10 +10,11 @@ local config = {
 		copy_mode = "C",
 		search_mode = "S",
 	},
-	inactive_bg = "#303030", -- colors.inactive_tab.bg_color
-	inactive_fg = "#c6c6c6", -- colors.inactive_tab.fg_color
+	inactive_bg = "#11111b", -- colors.inactive_tab.bg_color
+	inactive_fg = "#cdd6f4", -- colors.inactive_tab.fg_color
 	strip_extensions = {
 		[".sh"] = true,
+		[".bin"] = true,
 		[".exe"] = true,
 	},
 	known_aliases = {
@@ -188,8 +189,6 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_width)
-	local index_i = tab.tab_index + 1
-
 	local palette = conf.resolved_palette
 	local colors = palette.tab_bar
 
@@ -207,18 +206,14 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 	local inactive_bg = colors.inactive_tab.bg_color
 	local inactive_fg = colors.inactive_tab.fg_color
 
-	local s_bg, s_fg, e_bg, e_fg
+	local s_bg, s_fg
 
 	if tab.is_active then
 		s_bg = active_bg
 		s_fg = active_fg
-		e_bg = active_fg
-		e_fg = active_bg
 	else
 		s_bg = inactive_bg
 		s_fg = inactive_fg
-		e_bg = active_fg
-		e_fg = inactive_bg
 	end
 
 	local pane = tab.active_pane
@@ -230,9 +225,6 @@ wezterm.on("format-tab-title", function(tab, tabs, _panes, conf, _hover, _max_wi
 		{ Background = { Color = s_bg } },
 		{ Foreground = { Color = s_fg } },
 		{ Text = " " .. domain_icon .. tab_title .. " " },
-		{ Background = { Color = e_bg } },
-		{ Foreground = { Color = e_fg } },
-		{ Text = index_i == #tabs and "" or "" },
 	}
 end)
 
@@ -249,23 +241,18 @@ wezterm.on("update-status", function(window, pane)
 	local inactive_fg = colors.inactive_tab.fg_color
 
 	local leader_text = ""
-	local leader_bg = palette.ansi[6]
+	local leader_bg = palette.ansi[5]
 	local active = window:active_key_table()
 	if config.modes[active] ~= nil then
 		leader_text = config.modes[active]
 		leader_bg = palette.ansi[7]
 	elseif window:leader_is_active() then
 		leader_text = wezterm.nerdfonts.cod_circle_filled
-		leader_bg = palette.ansi[4]
+		leader_bg = palette.ansi[2]
 	else
 		leader_text = wezterm.nerdfonts.cod_circle
 	end
 
-	local leader_left = wezterm.format({
-		{ Background = { Color = "transparent" } },
-		{ Foreground = { Color = leader_bg } },
-		{ Text = "" },
-	})
 	local leader = wezterm.format({
 		{ Foreground = { Color = colors.background } },
 		{ Background = { Color = leader_bg } },
@@ -273,15 +260,9 @@ wezterm.on("update-status", function(window, pane)
 		{ Text = " " .. leader_text .. " " },
 	})
 
-	window:set_left_status(leader_left .. leader)
+	window:set_left_status(leader)
 
 	local time = wezterm.time.now():format(" %H:%M ")
-
-	local domain_left = wezterm.format({
-		{ Background = { Color = "transparent" } },
-		{ Foreground = { Color = inactive_bg } },
-		{ Text = "" },
-	})
 
 	local workspace = wezterm.format({
 		{ Background = { Color = inactive_bg } },
@@ -290,22 +271,17 @@ wezterm.on("update-status", function(window, pane)
 	})
 
 	local domain = wezterm.format({
-		{ Background = { Color = inactive_bg } },
-		{ Foreground = { Color = inactive_fg } },
+		{ Background = { Color = palette.ansi[2] } },
+		{ Foreground = { Color = palette.background } },
 		{ Text = " " .. pane:get_domain_name() .. " " },
 	})
 	local time_fmt = wezterm.format({
-		{ Background = { Color = palette.ansi[6] } },
+		{ Background = { Color = palette.ansi[5] } },
 		{ Foreground = { Color = palette.background } },
 		{ Text = " " .. time },
 	})
-	local time_right = wezterm.format({
-		{ Background = { Color = "transparent" } },
-		{ Foreground = { Color = palette.ansi[6] } },
-		{ Text = "" },
-	})
 
-	window:set_right_status(domain_left .. workspace .. domain .. time_fmt .. time_right)
+	window:set_right_status(workspace .. domain .. time_fmt)
 end)
 
 return M

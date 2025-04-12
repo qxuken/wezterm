@@ -21,29 +21,60 @@ local fira_features = {
 	"cv28",
 	"ss06",
 }
+local fira_font = {
+	family = "FiraMono Nerd Font",
+	harfbuzz_features = fira_features,
+	weight = "Medium",
+}
+
+local berkeley_font = {
+	family = "Berkeley Mono Variable",
+	-- weight = "DemiBold",
+}
 
 local config = {
-	theme = "Rosé Pine (Gogh)",
-	font_size = 19.0,
-	font_family = {
-		family = "FiraMono Nerd Font",
-		weight = "Medium",
-		harfbuzz_features = fira_features,
-	},
+	darkTheme = "Catppuccin Mocha (Gogh)",
+	lightTheme = "Catppuccin Latte (Gogh)",
+	font_size = 18.5,
+	font_family = berkeley_font,
 }
 
 local M = {}
+
+M.get_appearance = function()
+	if wezterm.gui then
+		return wezterm.gui.get_appearance() == "Light" and "Light" or "Dark"
+	end
+	return "Dark"
+end
+
+M.scheme_for_appearance = function()
+	if M.get_appearance():find("Dark") then
+		return config.darkTheme
+	else
+		return config.lightTheme
+	end
+end
 
 -- conforming to https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd
 M.apply_to_config = function(c)
 	c.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 	c.enable_scroll_bar = false
 
-	c.color_scheme = config.theme
-	c.colors = wezterm.color.get_builtin_schemes()[config.theme]
+	-- nightly only for now
+	-- c.native_macos_fullscreen_mode = false
+	-- c.macos_fullscreen_extend_behind_notch = true
 
-	c.font = wezterm.font(config.font_family)
+	local theme = M.scheme_for_appearance()
+	c.color_scheme = theme
+	c.colors = wezterm.color.get_builtin_schemes()[theme]
+
 	c.font_dirs = { "fonts" }
+	c.font = wezterm.font_with_fallback({
+		config.font_family,
+		berkeley_font,
+		fira_font,
+	})
 
 	c.font_size = config.font_size
 	c.command_palette_font_size = 22.0
