@@ -12,6 +12,8 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	-- config.set_environment_variables = { XDG_CONFIG_HOME = "/Users/qxuken/.config/" }
 end
 
+-- config.window_background_opacity = 0.8
+
 config_ui.apply_to_config(config)
 config_rendering.apply_to_config(config)
 config_tabbar.apply_to_config(config)
