@@ -22,7 +22,7 @@ M.apply_to_config = function(c)
 		{ key = "]", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
 		{ key = "9", mods = "LEADER", action = act.MoveTabRelative(-1) },
 		{ key = "0", mods = "LEADER", action = act.MoveTabRelative(1) },
-		{ key = "l", mods = "LEADER", action = act.ShowLauncher },
+		{ key = "o", mods = "LEADER", action = act.ShowLauncher },
 		{ key = "c", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") },
 		{ key = "w", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
 		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
