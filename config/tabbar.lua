@@ -22,11 +22,13 @@ local config = {
 		hx = "helix",
 		lz = "lazygit",
 		y = "yazi",
+		["jellyfin-tui"] = "jellyfin",
 	},
 	hide_names = {
 		nvim = true,
 		lazygit = true,
 		yazi = true,
+		jellyfin = true,
 	},
 	known_programs = {
 		Launcher = wezterm.nerdfonts.cod_rocket,
@@ -57,6 +59,7 @@ local config = {
 		pip3 = wezterm.nerdfonts.dev_python,
 		ansible = wezterm.nerdfonts.md_ansible,
 		sqlite3 = wezterm.nerdfonts.dev_sqllite,
+		jellyfin = utf8.char(0xf0f01),
 		storybook = utf8.char(0xe8b3),
 		yazi = wezterm.nerdfonts.md_folder_table,
 	},
